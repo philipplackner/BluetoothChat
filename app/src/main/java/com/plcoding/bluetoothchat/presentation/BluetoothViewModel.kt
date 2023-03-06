@@ -109,14 +109,14 @@ class BluetoothViewModel @Inject constructor(
                 }
             }
         }
-            .catch { throwable ->
-                bluetoothController.closeConnection()
-                _state.update { it.copy(
-                    isConnected = false,
-                    isConnecting = false,
-                ) }
-            }
-            .launchIn(viewModelScope)
+        .catch { throwable ->
+            bluetoothController.closeConnection()
+            _state.update { it.copy(
+                isConnected = false,
+                isConnecting = false,
+            ) }
+        }
+        .launchIn(viewModelScope)
     }
 
     override fun onCleared() {

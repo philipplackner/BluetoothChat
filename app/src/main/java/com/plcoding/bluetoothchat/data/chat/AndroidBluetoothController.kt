@@ -10,6 +10,8 @@ import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import com.plcoding.bluetoothchat.domain.chat.BluetoothController
 import com.plcoding.bluetoothchat.domain.chat.BluetoothDeviceDomain
 import com.plcoding.bluetoothchat.domain.chat.BluetoothMessage
@@ -84,7 +86,11 @@ class AndroidBluetoothController(
     }
 
     override fun startDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+            Log.d("AndroidBLEController", "With your API you should allow the permission: BLUETOOTH_SCAN")
+            return
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            Log.d("AndroidBLEController", "With your API you should allow the permission: ACCESS_FINE_LOCATION")
             return
         }
 
@@ -99,7 +105,11 @@ class AndroidBluetoothController(
     }
 
     override fun stopDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+            Log.d("AndroidBLEController", "With your API you should allow the permission: BLUETOOTH_SCAN")
+            return
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            Log.d("AndroidBLEController", "With your API you should allow the permission: ACCESS_FINE_LOCATION")
             return
         }
 
@@ -215,7 +225,7 @@ class AndroidBluetoothController(
     }
 
     private fun updatePairedDevices() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+        if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
         }
         bluetoothAdapter

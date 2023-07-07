@@ -86,11 +86,12 @@ class AndroidBluetoothController(
     }
 
     override fun startDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+            Log.d("AndroidBLEController", "With your API you should allow the permission: BLUETOOTH_SCAN")
             return
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
-            //Todo: write discovery code for lower APIs
-            Log.d("BLUETOOTH CONTROLLER", "Your API is lower than the recommended API")
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            Log.d("AndroidBLEController", "With your API you should allow the permission: ACCESS_FINE_LOCATION")
+            return
         }
 
         context.registerReceiver(
@@ -104,7 +105,11 @@ class AndroidBluetoothController(
     }
 
     override fun stopDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+            Log.d("AndroidBLEController", "With your API you should allow the permission: BLUETOOTH_SCAN")
+            return
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            Log.d("AndroidBLEController", "With your API you should allow the permission: ACCESS_FINE_LOCATION")
             return
         }
 

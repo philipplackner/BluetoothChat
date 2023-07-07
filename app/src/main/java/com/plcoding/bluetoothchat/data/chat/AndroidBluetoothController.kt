@@ -10,6 +10,8 @@ import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import com.plcoding.bluetoothchat.domain.chat.BluetoothController
 import com.plcoding.bluetoothchat.domain.chat.BluetoothDeviceDomain
 import com.plcoding.bluetoothchat.domain.chat.BluetoothMessage
@@ -84,8 +86,11 @@ class AndroidBluetoothController(
     }
 
     override fun startDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
+            //Todo: write discovery code for lower APIs
+            Log.d("BLUETOOTH CONTROLLER", "Your API is lower than the recommended API")
         }
 
         context.registerReceiver(
@@ -99,7 +104,7 @@ class AndroidBluetoothController(
     }
 
     override fun stopDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
         }
 
@@ -215,7 +220,7 @@ class AndroidBluetoothController(
     }
 
     private fun updatePairedDevices() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+        if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
         }
         bluetoothAdapter

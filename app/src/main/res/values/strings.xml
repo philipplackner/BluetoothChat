@@ -3,6 +3,7 @@
     <string name="stop_scan">Detener escaneo</string>
     <string name="paired_devices">Dispositivos emparejados</string>
     <string name="scanned_devices">Dispositivos escaneados</string>
+    <string name="app_name">BluetoothChat</string>
 
 </resources>
 
